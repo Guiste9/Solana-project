@@ -1,4 +1,6 @@
 use std::collections::BTreeMap;
+
+use crate::balances;
 pub struct Pallet {
     balances: BTreeMap<String,u128>
 }
@@ -15,6 +17,18 @@ impl Pallet {
     }
 
     pub fn balance(&self, account: String) -> u128 {
-        *self.balances.get(&account).unwrap_or(&0);
+        *self.balances.get(&account).unwrap_or(&0)
         }
     }
+
+#[test]
+
+fn init_balances(){
+    let mut balances = Pallet::new();
+    
+    assert_eq!(balances.balance("Guilherme".to_string()),0);
+    balances.set_balance("Guilherme".to_string(), 10);
+
+    assert_eq!(balances.balance("Guilherme".to_string()),10);
+    assert_eq!(balances.balance("Gabriel".to_string()),0);
+}
